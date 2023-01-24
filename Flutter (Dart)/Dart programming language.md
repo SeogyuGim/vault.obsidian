@@ -207,13 +207,103 @@ void main() {
 
 ### How to define
 
+```dart
+void sayHello(String name) {
+	print("Hello $name, nice to meet you!");
+}
+
+void retHello(String name) => "Hello $name, nice to meet you!";
+
+void main() {
+	sayHello('seogyugim');
+	print(rethello('seogyugim'));
+}
+```
+
 ### Named Parameters
+
+```dart
+String hello(
+	String name,
+	int age,
+	String country,
+) {
+	return "$name, $age, $country";
+}
+
+String namedDefaultHello({
+	String name = 'anonymous',
+	int age = 50,
+	String country = 'Korea',
+}) {
+	return "$name, $age, $country";
+}
+
+String namedRequiredHello({
+	required String name,
+	required int age,
+	required String country,
+}) {
+	return "$name, $age, $country";
+}
+
+void main() {
+	print(hello(
+		'seogyugim',
+		30,
+		'Korea',
+	));
+
+	print(namedDefaultHello());
+
+	print(namedRequiredHello(
+		name: 'seogyugim',
+		age: 30,
+		country: 'Korea',
+	));
+}
+```
 
 ### Optional Positional Parameters
 
-### QQ Operator
+```dart
+String sayHello(String name, int age, [String? country = "Hello"]) {
+	return "$name, $age, $country";
+}
+
+void main(List<String> args) {
+	print(sayHello("Hello",31,));
+}
+```
+
+### Question Question Operator
+
+```dart
+String getName([String? name]) => name?.toUpperCase() ?? "Seogyu Kim";
+
+void main(List<String> args) {
+	String name = getName();
+	String? name2;
+	name2 ??= "Example";
+	print(name);
+	print(name2);
+}
+```
 
 ### Typedef
+
+```dart
+typedef ListOfInts = List<int>;
+
+ListOfInts reverseListOfNumbers(ListOfInts list) {
+	var reversed = list.reversed;
+	return reversed.toList();
+}
+
+void main() {
+	reverseListOfNumbers([1,2,3]);
+}
+```
 
 ## Classes
 
