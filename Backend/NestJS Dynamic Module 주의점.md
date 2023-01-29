@@ -20,4 +20,3 @@ export const databaseProviders = [
 
 - 참고
 	- `MySqlConfigService` 는  `ConfigService`에 의존성이 있다.
-	- 위와 같은 경우에서 `ConfigService`는 `AppModule`에서 `global: true`로 사용 중 이었기 때문에 `inject`할 필요는 없었다.
