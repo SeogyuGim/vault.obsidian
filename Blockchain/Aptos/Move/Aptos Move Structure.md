@@ -1,38 +1,39 @@
 # Aptos Move Structure
 
-Take a moment to understand how Aptos suggest structuring your Move code.
+여러분의 Move 코드를 어떻게 구성하는게 좋은지 이해하는 시간을 가져봅시다
 
-Structs in Move resemble structs in other programming languages such as Rust, acting as classes of functions. You can have as many fields in a struct as you desire, but you cannot have a method on a struct, as in object-oriented programming. Similarly, there is no inheritance in Move. Instead, you would need to duplicate a struct to recreate it.
+Move의 구조체는 함수 클래스 역할을 하는 Rust와 같은 다른 프로그래밍 언어의 구조체와 비슷합니다. 원하는 만큼 구조체에 많은 필드를 가질 수 있지만 개체 지향 프로그래밍에서와 같이 구조체에 메서드를 가질 수는 없습니다. 마찬가지로 Move에는 상속이 없습니다. 대신 구조체를 다시 생성하려면 구조체를 복제해야 합니다.
 
-Once published, the definition of a struct in Move is immutable. Structs themselves are not upgradeable, although the values of their fields may change. For security in Move, only the module a struct is defined in may deconstruct the struct or access its properties.
+일단 게시되면 Move의 구조체 정의는 변경할 수 없습니다. 구조체 자체는 업그레이드할 수 없지만 해당 필드의 값은 변경될 수 있습니다. Move의 보안을 위해 구조체가 정의된 모듈만 구조체를 분해하거나 해당 속성에 액세스할 수 있습니다.
 
 ## Abilities
 
-[Structures](https://move-language.github.io/move/structs-and-resources.html) in Move can be given different [abilities](https://move-language.github.io/move/abilities.html) that describe what can be done with that type. There are four different abilities that allow:
+Move의 구조체(Structures)에는 해당 유형으로 수행할 수 있는 작업을 설명하는 다양한 기능이 부여될 수 있습니다. 다음과 같은 네 가지 기능이 있습니다.
 
-- copy: values of types with this ability to be copied. A geographic ID would be a good use case. NFTs should not have this ability.
-- drop: values of types with this ability to be popped/dropped.
-- store: values of types with this ability to be saved or stored inside a struct in global storage.
-- key: the type to serve as a key for global storage operations. With this ability, a value can be stored as a top-level item inside an account.
+- copy: 복사할 수 있는 기능. 지리적 ID가 좋은 활용 사례가 될 것입니다. NFT는 이 기능을 가지고 있어서는 안 됩니다.  values of types with this ability to be copied. A geographic ID would be a good use case. NFTs should not have this ability.
+- drop: 팝/드롭할 수 있는 기능.
+- store: 글로벌 스토리지의 구조체 내부에 저장 또는 저장할 수 있는 기능.
+- key: 글로벌 스토리지 작업의 키 역할을 하는 유형입니다. 이 기능을 사용하면 값을 계정 내 최상위 항목으로 저장할 수 있습니다.
 
 ## Global storage
 
-In Move, each account may have only one resource of a given type. This is because an account in Move resembles a hashmap whereby there will be only one `Coin` type, for instance. The hashmap is a mapping of resource type or module name to resource value. This is why Aptos offers the holder patterns of `CoinStore` and `TokenStore`, to provide an abstraction for holding multiple coins and tokens. These holders will contain tables or use generics for storage.
+Move에서 각 계정은 주어진 유형의 리소스를 하나만 가질 수 있습니다. `Coin`예를 들어 Move의 계정은 하나의 유형 만 존재하는 해시맵과 유사하기 때문입니다 . 해시맵은 리소스 유형 또는 모듈 이름을 리소스 값에 매핑한 것입니다. 이것이 Aptos가 여러 코인과 토큰을 보유하기 위한 추상화를 제공하기 위해 `CoinStore`및 의 홀더 패턴을 제공하는 이유입니다. `TokenStore`이러한 홀더는 테이블을 포함하거나 저장을 위해 제네릭을 사용합니다.
 
-Aptos employs [Merkle trees](https://aptos.dev/reference/glossary/#merkle-trees) for efficient state synchronization and authenticated storage reads.
+Aptos 는 효율적인 상태 동기화 및 인증된 스토리지 읽기를 위해 [Merkle 트리 를 사용합니다.](https://aptos.dev/reference/glossary/#merkle-trees)
 
 ## Signers
 
-In Aptos, signers are incredibly powerful. Structs are published under the signer address. Signers are generated when you sign and submit a transaction. When submitting the transaction, the signer is the first parameter by default. The signer has given consent to have their struct on chain. Signer does not have the Store or Key abilities, only the copy ability.
+Aptos에서 서명자는 엄청나게 강력합니다. 구조체는 서명자 주소로 게시됩니다. 서명자는 트랜잭션에 서명하고 제출할 때 생성됩니다. 트랜잭션을 제출할 때 서명자는 기본적으로 첫 번째 매개변수입니다. 서명자는 자신의 구조체를 체인에 포함하는 데 동의했습니다. 서명자에게는 저장 또는 키 기능이 없고 복사 기능만 있습니다.
 
 ## key
 
-To make signers available to other users, signers are stored in resources. The key ability allows the type to serve as a key for global storage operations, such as Coin having the Store ability. Since Balance has the key ability, you can store it as a top-level item inside an account.
+다른 사용자가 서명자를 사용할 수 있도록 하기 위해 서명자는 리소스에 저장됩니다. `key` 기능을 통해 `type`은 `store` 기능이 있는 `Coin`과 같은 글로벌 스토리지 작업의 `key` 역할을 할 수 있습니다. `Balance`에는 `key`기능이 있으므로 계정 내 최상위 항목으로 `store`할 수 있습니다.
 
-Aptos does not store the signer but rather the signer capability. Only restricted native functions can create the signer capability. Minting an NFT requires access to the signer who created the collection. This is why many pre-mint the NFTs when conducting dynamic minting. Aptos provides resource accounts to sign transactions autonomously.
+Aptos는 서명자를 저장하지 않고 서명자 기능을 저장합니다. 제한된 `native` 기능만 서명자 기능을 만들 수 있습니다. NFT를 `minting`하려면 컬렉션을 생성한 서명자에 대한 액세스 권한이 필요합니다. 이것이 동적 발행을 수행할 때 많은 사람들이 NFT를 미리 발행(`pre-mint`)하는 이유입니다. Aptos는 트랜잭션에 자율적으로 서명할 수 있는 리소스 계정을 제공합니다.
 
 ## acquires
 
+유저가 구조체와 같은 글로벌 리소스를 사용할때마다 항상 먼저 이것을 획득(`acquire`)해야합니다. 예를 들어,  NFT 입출금시 `TokenStore`를 획득해야 합니다. 리소스를 획득하는 모듈 내부의 함수를 호출하는 다른 모듈의 함수가 있는 경우 첫 번째 함수에 `acquires()`로 레이블을 지정할 필요가 없습니다.
 Anytime you need to use any global resources, such as a struct, you should acquire it first. For example, both depositing and withdrawing an NFT acquire `TokenStore`. If you have a function in a different module that calls a function inside the module that acquires the resource, you don’t have to label the first function as `acquires()`.
 
 This makes ownership clear since a resource is stored inside of an account. An account can decide if a resource may be created there. The module that defines that resource has power over reading and modifying that struct. So code inside that module needs to explicitly acquire that struct.
