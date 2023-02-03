@@ -43,10 +43,12 @@ Aptos는 서명자를 저장하지 않고 서명자 기능을 저장합니다. �
 
 ## move_to
 
+그런 다음 `move_to` 함수를 서명자 및 계정에 대한 참조와 함께 사용하여 구조체를 계정으로 이동할 수 있습니다. 그 과정에서 우리는 가치가 있는 코인의 새로운 인스턴스를 생성합니다.
 You may then use the `move_to` function along with a reference to signer and account to move the struct into an account. In the process, we create a new instance of coin with value.
 
 ## Initialization
 
+`init_module`은 모듈이 배포될 때 자동으로 호출되고 실행됩니다.
 The `init_module` automatically gets called and run when the module is published:
 
 ```shell
@@ -55,9 +57,10 @@ The `init_module` automatically gets called and run when the module is published
         let resource_signer = account::create_signer_with_capability(&resource_signer_cap);
 ```
 
+`mint_nft_ticket()` 함수는 콜렉션을 가져오고 토큰을 생성합니다.
 The `mint_nft_ticket()` function gets a collection and creates a token.
 
-With the resulting TokenData ID, the function uses the resource signer of the module to mint the token to an NFT receiver.
+TokenData ID의 결과로, 함수는 모듈의 리소스 서명자를 사용하여 토큰을 NFT 수신자에 `mint`합니다.
 
 For example:
 
@@ -68,49 +71,49 @@ For example:
 
 ## Signing
 
-Any `entry fun` will take as the first parameter the type `&signer`. In both Move and Aptos, whenever you submit a transaction, the private key you sign the transaction with automatically makes the associated account the first parameter of the signer.
+모든 `entry fun`은 `&signer` 유형을 첫 번째 매개변수로 사용합니다. Move와 Aptos 모두 트랜잭션을 제출할 때마다 트랜잭션에 서명하는 개인 키가 자동으로 연결된 계정을 서명자의 첫 번째 매개변수로 만듭니다.
 
-You can go from the signer to an address but normally not the reverse. So when claiming an NFT, both the private keys of the minter and receiver are needed, as shown in the instructions below.
+서명자에서 주소로 이동할 수 있지만 일반적으로 그 반대는 아닙니다. 따라서 NFT를 청구할 때 아래 지침과 같이 생성자와 수신자의 개인 키가 모두 필요합니다.
 
-In the `init_module`, the signer is always the account uploading the contract. This gets combined with:
+`init_module`에서 서명자는 항상 계약을 업로드하는 계정입니다. 이것은 다음과 결합됩니다.
 
-```shell
+```move
         token::create_collection(&resource_signer, collection, description, collection_uri, maximum_supply, mutate_setting);
 
 ```
 
 Then:
 
-```shell
+```move
         signer_cap: account::SignerCapability,
 ```
 
-The signer capability allows the module to sign autonomously. The [resource account](../resource-accounts.md) prevents anyone from getting the private key and is entirely controlled by the contract.
+서명자 기능을 사용하면 모듈이 자율적으로 서명할 수 있습니다. 자원 계정은 누구도 개인 키를 가져오지 못하도록 하며 전적으로 계약에 의해 제어됩니다.
 
 ## Module data
 
-The `ModuleData` is then initialized and _moved_ to the resource account, which has the signer capability:
+그런 다음 'ModuleData'가 초기화되고 서명자 기능이 있는 리소스 계정으로 `_moved_`됩니다.
 
 ```shell
         move_to(resource_account, ModuleData {
 ```
 
-In the `mint_nft_ticket()` function, the first step is borrowing the `ModuleData` struct:
+`mint_nft_ticket()` 함수에서 첫 번째 단계는 `ModuleData` 구조체를 차용하는 것입니다.
 
 ```shell
         let module_data = borrow_global_mut<ModuleData>(@mint_nft);
 ```
 
-And then use the reference to the signer capability in the `ModuleData` struct to create the `resource_signer`:
+그런 다음 `ModuleData` 구조체의 서명자 기능에 대한 참조를 사용하여 `resource_signer`를 만듭니다.
 
 ```shell
         let resource_signer = account::create_signer_with_capability(&module_data.signer_cap);
 ```
 
-In this manner, you can later use the signer capability already stored in module. When you move a module and its structs into an account, they become visible in [Aptos Explorer](https://explorer.aptoslabs.com/) associated with the account.
+이러한 방식으로 모듈에 이미 저장된 서명자 기능을 나중에 사용할 수 있습니다. 모듈과 해당 구조를 계정으로 이동하면 해당 계정과 연결된 Aptos Explorer에 표시됩니다.
 
 ## Accounts
 
-When you are minting an NFT, for example, the NFT is stored under your [account](../../concepts/accounts.md) address. When you submit a transaction, you sign the transaction. Find your account configuration information in `.aptos/config.yaml` relative to where you run `aptos init` (below).
+예를 들어 NFT를 발행할 때 NFT는 계정 주소에 저장됩니다. 트랜잭션을 제출하면 트랜잭션에 서명합니다. `aptos init`를 실행하는 위치(아래)와 관련된 `.aptos/config.yaml`에서 계정 구성 정보를 찾으십시오.
 
-[Resource accounts](../resource-accounts.md) allow the delegation of signing transactions. You create a resource account to grant a signer capability that can be stored in a new resource on the same account and can sign transactions autonomously. The signer capability is protected as no one has access to the private key for the resource account.
+리소스 계정을 사용하면 트랜잭션 서명을 위임할 수 있습니다. 리소스 계정을 생성하여 동일한 계정의 새 리소스에 저장할 수 있고 자율적으로 트랜잭션에 서명할 수 있는 서명자 기능을 부여합니다. 아무도 자원 계정의 개인 키에 액세스할 수 없으므로 서명자 기능이 보호됩니다.
