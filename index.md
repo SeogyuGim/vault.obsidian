@@ -6,14 +6,15 @@
 
 ### 101
 
-1. [What is Blockchain](Blockchain/101/1.md)
-2. [What is Checksum](Blockchain/101/2.md)
-3. [HD Wallet](./Blockchain/101/3.md)
-4. [Istanbul Bizantine Fault](./Blockchain/101/4.md)
+1. [What is Blockchain](Blockchain/101/what-is-blockchain.md)
+2. [What is Checksum](Blockchain/101/checksum.md)
+3. [HD Wallet](./Blockchain/101/hd-wallet.md)
+4. [Istanbul Bizantine Fault](./Blockchain/101/istanbul-byzantine-fault.md)
 
 ### BTC
 
 [Bitcoin Address Types](./Blockchain/BTC/address-type.md)
+[SPV (Simplified Payment Verification)](./Blockchain/BTC/spv.md)
 
 ### Ethereum
 
@@ -49,10 +50,10 @@
 
 ### Aptos
 
-1. [Aptos 통합가이드](./Blockchain/APT/6.md)
-2. [Aptos 백서](./Blockchain/APT/7.md)
-3. [Aptos의 Move](./Blockchain/APT/Move/4.md)
-4. [Aptos Move 구조](./Blockchain/APT/Move/1.md)
+1. [Aptos 통합가이드](./Blockchain/APT/system-integrators-guide.md)
+2. [Aptos 백서](./Blockchain/APT/aptos-white-paper-in-korean.md)
+3. [Aptos의 Move](./Blockchain/APT/Move/move-on-aptos.md)
+4. [Aptos Move 구조](./Blockchain/APT/Move/aptos-structure.md)
 
 ## Backend
 
@@ -63,9 +64,9 @@
 
 ### Typescript
 
-1. [데코레이터란?](./Languages/Typescript/1.md)
-2. [Enum 대신 사용할 수 있는 as const](./Languages/Typescript/2.md)
-3. [Mocha의 NODE_ENV](./Languages/Typescript/3.md)
+1. [데코레이터란?](./Languages/Typescript/decorators.md)
+2. [Enum 대신 사용할 수 있는 as const](./Languages/Typescript/enum-or-as-const.md)
+3. [Mocha의 NODE_ENV](./Languages/Typescript/mocha-node-env.md)
 
 ### Rust
 
