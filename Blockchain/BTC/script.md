@@ -12,7 +12,7 @@
 
 ## 예시
 
-### pay-to-pubkey-hash
+### p2pkh(pay-to-pubkey-hash)
 
 ```
 scriptPubKey: OP_DUP OP_HASH160 <pubKeyHash> OP_EQUALVERIFY OP_CHECKSIG
@@ -28,6 +28,44 @@ scriptSig: <sig> <pubKey>
 | `<sig>` `<pubKey>` `<pubKeyHashA>` `<pubkeyHash>` | OP_EQUALVERIFY OP_CHECKSIG                                                     | 상수를 스택에 추가한다                   |
 | `<sig>` `<pubKey>`                                | OP_CHECKSIG                                                                    | 최상위 두개 아이템이 동일함을 확인하였다 |
 | true                                              | Empty                                                                          | 최상위 두개 아이템의 서명이 확인되었다   |
+
+### p2wpkh(pay-to-witness-pubkey-hash)
+
+```
+scriptPubKey: OP_0 <pubkey.hash:20>
+scriptSig: Empty.
+witness: <sig> <pubkey>
+```
+
+| Stack                                             | Script                                                                         | Description                                                                        |
+| ------------------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| Empty                                             | OP_0 <pubkey.hash:20>                                                          | scriptSig와 scriptPubKey가 결합된다                                                |
+| Empty                                             | `<sig>` `<pubKey>` OP_DUP OP_HASH160 `<pubkeyHash>` OP_EQUALVERIFY OP_CHECKSIG | p2wpkh패턴, witness정보의 `<sig>` `<pubkey>`을 통해 `<pubkey.hash:20>`을 치환한다. |
+| `<sig>` `<pubKey>`                                | OP_DUP OP_HASH160 `<pubkeyHash>` OP_EQUALVERIFY OP_CHECKSIG                    | 상수를 스택에 추가한다                                                             |
+| `<sig>` `<pubKey>` `<pubKey>`                     | OP_HASH160 `<pubkeyHash>` OP_EQUALVERIFY OP_CHECKSIG                           | 최상위 스택 아이템이 복사되었다                                                    |
+| `<sig>` `<pubKey>` `<pubKeyHashA>`                | `<pubkeyHash>` OP_EQUALVERIFY OP_CHECKSIG                                      | 최상위 스택 아이템이 해싱되었다                                                    |
+| `<sig>` `<pubKey>` `<pubKeyHashA>` `<pubkeyHash>` | OP_EQUALVERIFY OP_CHECKSIG                                                     | 상수를 스택에 추가한다                                                             |
+| `<sig>` `<pubKey>`                                | OP_CHECKSIG                                                                    | 최상위 두개 아이템이 동일함을 확인하였다                                           |
+| true                                              | Empty                                                                          | 최상위 두개 아이템의 서명이 확인되었다                                             |
+
+### p2sh-p2wpkh
+
+```
+scriptPubKey: <OP_HASH160> <script-hash> <OP_EQUAL>
+scriptSig(redeemScript): hash160(<OP_2> <pubkey-a> <pubkey-b> <pubkey-c> <OP_3> <OP_CHECKMULTISIG>)
+witness: <sig> <pubkey>
+```
+
+| Stack                                             | Script                                                                         | Description                                                                        |
+| ------------------------------------------------- | ------------------------------------------------------------------------------ | ---------------------------------------------------------------------------------- |
+| Empty                                             | `<redeem_script>` OP_HASH160 `<script-hash>` `OP_EQUAL`                        | scriptSig와 scriptPubKey가 결합된다                                                |
+| Empty                                             | `<sig>` `<pubKey>` OP_DUP OP_HASH160 `<pubkeyHash>` OP_EQUALVERIFY OP_CHECKSIG | p2wpkh패턴, witness정보의 `<sig>` `<pubkey>`을 통해 `<pubkey.hash:20>`을 치환한다. |
+| `<sig>` `<pubKey>`                                | OP_DUP OP_HASH160 `<pubkeyHash>` OP_EQUALVERIFY OP_CHECKSIG                    | 상수를 스택에 추가한다                                                             |
+| `<sig>` `<pubKey>` `<pubKey>`                     | OP_HASH160 `<pubkeyHash>` OP_EQUALVERIFY OP_CHECKSIG                           | 최상위 스택 아이템이 복사되었다                                                    |
+| `<sig>` `<pubKey>` `<pubKeyHashA>`                | `<pubkeyHash>` OP_EQUALVERIFY OP_CHECKSIG                                      | 최상위 스택 아이템이 해싱되었다                                                    |
+| `<sig>` `<pubKey>` `<pubKeyHashA>` `<pubkeyHash>` | OP_EQUALVERIFY OP_CHECKSIG                                                     | 상수를 스택에 추가한다                                                             |
+| `<sig>` `<pubKey>`                                | OP_CHECKSIG                                                                    | 최상위 두개 아이템이 동일함을 확인하였다                                           |
+| true                                              | Empty                                                                          | 최상위 두개 아이템의 서명이 확인되었다                                             |
 
 ### 미래 특정 시점까지 자금을 동결하고 싶은 경우
 
@@ -68,4 +106,9 @@ scriptSig(redeemScript): hash160(<OP_2> <pubkey-a> <pubkey-b> <pubkey-c> <OP_3> 
 
 ## Ref
 
--   https://learnmeabitcoin.com/technical/p2sh
+- https://learnmeabitcoin.com/technical/p2sh
+- https://medium.com/programming-bitcoin/chapter-13-세그윗-865a0c3f6414
+- https://dev-notes.eu/2020/11/Bitcoin-Pay-To-Script-Hash/
+- https://bitcoin.design/guide/glossary/address/
+- https://developer.bitcoin.org/reference/rpc/
+- https://en.bitcoin.it/wiki/Category:Technical
