@@ -152,7 +152,7 @@ public class BankAccount {
 
   public void MakeDeposit(decimal amount, DateTime date, string note)
   {
-    if (amount <= 0>)
+    if (amount <= 0)
     {
       throw new ArgumentOutOfRangeException(nameof(amount), "Amount of deposit must be positive");
     }
@@ -162,7 +162,7 @@ public class BankAccount {
 
   public vode MakeWithdraw(decimal amount, DateTime date, string note)
   {
-    if (amount <= 0>)
+    if (amount <= 0)
     {
       throw new ArgumentOutOfRangeException(nameof(amount), "Amount of withdrawal must be positive");
     }
