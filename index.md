@@ -14,7 +14,7 @@
 8. [Http 요청을 최적화하는 방법](./Backend/how-to-reduce-http-req.md)
 9. [OOP](./Backend/oop.md)
 10. [Object](./Backend/object.md)
-11. [Upsert vs UK Constraint](./Backend/upsert-vs-constraint.md)
+11. [대용량 데이터 인덱싱 작업에서 데이터베이스 부하 최적화 방법](./Backend/upsert-vs-constraint.md)
 
 ## Blockhain
 
