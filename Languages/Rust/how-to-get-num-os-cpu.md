@@ -9,24 +9,22 @@
 num_cpus = "1.0"
 ```
 
-```rust
+```rs
 extern crate num_cpus;
 let num = num_cpus::get();
 ```
 
 ## 그 다음 방식 (deprecated)
 
-```rust
+```rs
 fn main() {
     println!("{}", std::os::num_cpus());
 }
 ```
 
+## 현재 방식
 
-## 현재 방식 
-
-```rust
+```rs
 // rustc 1.67.0 (fc594f156 2023-01-24)
 std::thread::available_parallelism().unwrap().get()
 ```
-
