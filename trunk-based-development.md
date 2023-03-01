@@ -37,16 +37,29 @@ if (version.startsWith('v2.5')) {
 1. package.json의 version을 가져오는 것
    다만 참조한 스택오버플로우 답변에도 적혀있듯이, 브라우저에서 사용할 시엔 package.json의 내용을 클라이언트에서 참조할 수 있으므로 NodeJS를 활용한 서버에서만 활용하는게 좋을 듯 하다.
 
-   ```mjs
-   // this is version of package.json
+   ```ts
+   // You need to set resolveJsonModule true in tsconfig.json
    import { version } from './package.json'
+   console.log(`version = ${version}`)
+   console.log(`Is flag enabled? ${version.startsWith('2.5')}`)
+   // version = 1.0.0
+   // Is flag enabled? false
    ```
 
 2. process 환경변수에서 가져오는 것
    만약 NodeJS 애플리케이션이 npm 등의 패키지 매니저로 시작되었다면 아래와 같이 가져올 수 있다.
 
-   ```mjs
+   ```ts
+   // run npm start
    const version = process.env.npm_package_version
+   console.log(`version = ${version}`)
+   console.log(
+   	`Is flag enabled? ${
+   		version ? version.startsWith('2.5') : 'version is undefined'
+   	}`,
+   )
+   // version = 1.0.0
+   // Is flag enabled? false
    ```
 
 물론 버전을 통한 플래그 처리를 하기 위해서는 철저한 package.json 관리가 필요하다.
