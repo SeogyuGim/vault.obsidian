@@ -54,9 +54,7 @@ if (version.startsWith('v2.5')) {
    const version = process.env.npm_package_version
    console.log(`version = ${version}`)
    console.log(
-   	`Is flag enabled? ${
-   		version ? version.startsWith('2.5') : 'version is undefined'
-   	}`,
+   	`Is flag enabled? ${version?.startsWith('2.5') ?? 'version is undefined'}`,
    )
    // version = 1.0.0
    // Is flag enabled? false
