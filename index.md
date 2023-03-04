@@ -20,6 +20,7 @@
 14. [Best Isolation Level](./MySQL/best-isolation-lv.md)
 15. [ACID](./MySQL/acid.md)
 16. [HTTP 전송 크기를 줄이는 방법](./Backend/reduce-http-transfer-size.md)
+17. [HTTP 쿠키 보안](./Backend/http-secure-cookie-ways.md)
 
 ## Blockchain
 
