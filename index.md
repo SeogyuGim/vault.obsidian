@@ -16,9 +16,9 @@
 10. [Object](./Backend/object.md)
 11. [대용량 데이터 인덱싱 작업에서 데이터베이스 부하 최적화 방법](./Backend/upsert-vs-constraint.md)
 12. [트렁크 기반 개발](Backend/trunk-based-development.md)
-13. [how-to-query-with-transaction](./MySQL/how-to-query-with-transaction.md)
-14. [Best Isolation Level](./MySQL/best-isolation-lv.md)
-15. [ACID](./MySQL/acid.md)
+13. [how-to-query-with-transaction](Database/mysql/how-to-query-with-transaction.md)
+14. [Best Isolation Level](Database/mysql/best-isolation-lv.md)
+15. [ACID](Database/mysql/acid.md)
 16. [HTTP 전송 크기를 줄이는 방법](./Backend/reduce-http-transfer-size.md)
 17. [HTTP 쿠키 보안](./Backend/http-secure-cookie-ways.md)
 
